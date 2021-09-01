@@ -7,31 +7,64 @@ const chalk = require('chalk')
 
 // Función que escribe archivo, recibe nombre y texto 
 
-let WriteArch = (usuario, texto) => {
+const WriteArch = (usuario, texto) => {
     fs.writeFile(usuario, texto, () => {
         console.log("Archivo Creado")
     })
 }
 
-axios
+
+const RellenoUsuarios = (user) => {
+
+    var listaUsuarios = []
+    listaUsuarios.push(user)
+    return listaUsuarios
+}
+
+
+
+for (var i = 0; i < 4; i++) {
+   
+    axios
     .get("https://randomuser.me/api/")
     .then((data) => {
 
         // Recibe Usuario
         const nombre = data.data.results[0].name;
-
+        
         // Crea JSON con nombre de usuario
-        let texto = ` {nombre: ${nombre.first}, apellido: ${nombre.last}, id: ${uuidv4().slice(0,6)}, fecha: ${moment().format('MMM Do YYYY')}}`
-        console.log(chalk.blue.bgWhite.bold((`${texto}`)))
+        var usuario = {
+            nombre: `${nombre.first}`,
+            apellido: `${nombre.last}`,
+            id: `${uuidv4().slice(0,6)}`,
+            fecha: `${moment().format('MMM Do YYYY')}`
+        };
+        
+        // Ver si llega el usario
+        //console.log(usuario)
+        //listaUsuarios.push(usuario)
 
-        WriteArch("usuario.txt", texto)
+        console.log(RellenoUsuarios(usuario));
+
+        // Texto para escribir .txt 
+        let texto = `{nombre: ${nombre.first}, apellido: ${nombre.last}, id: ${uuidv4().slice(0,6)}, fecha: ${moment().format('MMM Do YYYY')}}`
+        //WriteArch("usuario.txt", texto)
+
+        // Imprimir por consola el mismo txt 
+        //console.log(chalk.blue.bgWhite.bold((`${texto}`)))
+        
     })
 
     .catch((e) => {
         console.log(e);
     });
 
-    
+
+
+
+ }
+
+
 
     // falta hacer que entregue varios nombres, guardarlos en un objeto e imprimir el arreglo
     
